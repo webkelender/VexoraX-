@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech VexoraX — We Build Websites That Grow Your Business</title>
+<link rel="icon" type="image/jpeg" href="logo.jpg">
+<link rel="apple-touch-icon" href="logo.jpg">
+<style>
+  :root{
+    --purple:#a855f7; --purple-dark:#9333ea; --purple-50:rgba(168,85,247,.14);
+    --blue:#3b82f6; --blue-500:#3b82f6; --cyan:#06b6d4;
+    --gray-50:rgba(255,255,255,.04); --gray-100:rgba(255,255,255,.08); --gray-200:rgba(255,255,255,.14); --gray-300:rgba(255,255,255,.2);
+    --gray-400:#94a3b8; --gray-500:#94a3b8; --gray-600:#cbd5e1; --gray-700:#e2e8f0;
+    --gray-800:#1e293b; --gray-900:#0b1120;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#e5e7eb;background:#050810;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  img,svg{display:block;}
+  a{text-decoration:none;color:inherit;}
+  button{font:inherit;cursor:pointer;border:none;background:none;}
+  ul{list-style:none;}
+  .container{max-width:1280px;margin:0 auto;padding:0 24px;}
+  .icon{width:20px;height:20px;flex-shrink:0;}
+
+  /* Buttons */
+  .btn-gradient{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(90deg,var(--purple),var(--blue));color:#fff;font-weight:500;font-size:14px;padding:12px 24px;border-radius:999px;transition:box-shadow .2s;white-space:nowrap;}
+  .btn-gradient:hover{box-shadow:0 12px 24px -6px rgba(147,51,234,.4);}
+  .btn-gradient.small{padding:10px 20px;}
+  .btn-outline{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--gray-200);color:var(--gray-700);font-weight:500;font-size:14px;padding:12px 24px;border-radius:999px;transition:all .2s;}
+  .btn-outline:hover{border-color:#c4b5fd;color:var(--purple);}
+  .btn-outline.on-dark{border-color:rgba(255,255,255,.4);color:#fff;}
+  .btn-outline.on-dark:hover{background:rgba(255,255,255,.1);}
+  .btn-white{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--purple);font-weight:500;font-size:14px;padding:12px 24px;border-radius:999px;transition:box-shadow .2s;}
+  .btn-white:hover{box-shadow:0 12px 24px -6px rgba(0,0,0,.25);}
+
+  /* Reveal animation */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  /* Navbar */
+  #navbar{position:fixed;top:0;left:0;right:0;z-index:50;transition:all .3s ease;background:transparent;}
+  #navbar.scrolled{background:rgba(5,8,16,.85);backdrop-filter:blur(10px);box-shadow:0 1px 3px rgba(0,0,0,.3);border-bottom:1px solid rgba(255,255,255,.08);}
+  .navbar-inner{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1280px;margin:0 auto;}
+  .logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;}
+  .logo img{height:30px;width:auto;display:block;}
+  .logo-mark{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;}
+  .nav-links{display:none;gap:32px;}
+  .nav-links a{font-size:14px;color:var(--gray-600);transition:color .2s;}
+  .nav-links a:hover{color:var(--purple);}
+  .navbar-cta{display:none;}
+  #menu-btn{display:inline-flex;color:var(--gray-700);}
+  @media (min-width:768px){.nav-links{display:flex;}.navbar-cta{display:inline-flex;}#menu-btn{display:none;}}
+  #mobile-menu{display:none;flex-direction:column;gap:16px;padding:8px 24px 24px;background:#0b1120;border-top:1px solid var(--gray-100);}
+  #mobile-menu.open{display:flex;}
+  #mobile-menu a{font-size:14px;color:var(--gray-600);}
+
+  /* Hero */
+  .hero{position:relative;padding:150px 24px 80px;overflow:hidden;background:linear-gradient(to bottom,rgba(168,85,247,.1),#050810 65%);}
+  .hero-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:48px;align-items:center;}
+  @media (min-width:1024px){.hero-grid{grid-template-columns:1fr 1fr;}}
+  .eyebrow{display:inline-block;background:var(--purple-50);color:var(--purple);font-size:12px;font-weight:500;padding:6px 16px;border-radius:999px;margin-bottom:20px;}
+  .hero h1{font-size:36px;font-weight:700;line-height:1.2;color:#f8fafc;margin-bottom:20px;}
+  @media (min-width:640px){.hero h1{font-size:48px;}}
+  .gradient-text{background:linear-gradient(90deg,var(--purple),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .hero .lead{color:var(--gray-500);font-size:18px;max-width:480px;margin-bottom:32px;}
+  .hero-ctas{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:32px;}
+  .trust{display:flex;align-items:center;gap:16px;}
+  .avatar-stack{display:flex;}
+  .avatar-stack span{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#e9d5ff,#bfdbfe);border:2px solid #050810;margin-left:-12px;}
+  .avatar-stack span:first-child{margin-left:0;}
+  .trust-name{font-size:14px;font-weight:600;}
+  .stars{color:#fbbf24;display:flex;gap:2px;align-items:center;font-size:12px;color:var(--gray-500);}
+  .stars svg{width:14px;height:14px;color:#fbbf24;}
+  .hero-visual{position:relative;height:380px;display:none;}
+  @media (min-width:640px){.hero-visual{display:block;}}
+  .hero-mockup-img{position:absolute;right:0;top:0;width:100%;max-width:520px;height:auto;animation:float 6s ease-in-out infinite;filter:drop-shadow(0 25px 40px rgba(0,0,0,.25));}
+  .float-card{position:absolute;left:0;bottom:24px;background:#0d1420;border-radius:12px;box-shadow:0 20px 25px -5px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.08);padding:16px;width:224px;animation:float 6s ease-in-out infinite .5s;}
+  .float-card-icon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--purple),var(--blue));display:flex;align-items:center;justify-content:center;margin-bottom:8px;}
+  .float-card-icon svg{color:#fff;width:16px;height:16px;}
+  .float-card p:first-of-type{font-size:14px;font-weight:600;}
+  .float-card p:last-of-type{font-size:12px;color:var(--gray-400);margin-top:4px;}
+  .chat-bubble{position:absolute;right:0;bottom:0;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--blue));display:flex;align-items:center;justify-content:center;box-shadow:0 10px 20px -3px rgba(0,0,0,.3);}
+  .chat-bubble svg{color:#fff;width:20px;height:20px;}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+  /* Section titles */
+  .section{padding:80px 24px;}
+  .section-title-center{text-align:center;max-width:640px;margin:0 auto 56px;}
+  .section-title-left{max-width:520px;margin-bottom:56px;}
+  .section-eyebrow{color:var(--purple);font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;}
+  .section h2{font-size:30px;font-weight:700;color:#f8fafc;margin-top:12px;margin-bottom:12px;}
+  @media (min-width:640px){.section h2{font-size:36px;}}
+  .section p.sub{color:var(--gray-500);}
+
+  /* Services */
+  .services{background:#050810;}
+  .services-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+  @media (min-width:768px){.services-grid{grid-template-columns:repeat(3,1fr);gap:16px;}}
+  @media (min-width:1024px){.services-grid{grid-template-columns:repeat(5,1fr);}}
+  .service-card{background:#0d1420;border:1px solid var(--gray-100);border-radius:12px;padding:10px;transition:all .3s ease;height:100%;display:block;text-decoration:none;color:inherit;cursor:pointer;}
+  @media (min-width:768px){.service-card{padding:18px;border-radius:16px;}}
+  .service-card:hover{box-shadow:0 20px 25px -5px rgba(0,0,0,.1);transform:translateY(-4px);}
+  .services .service-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:6px;}
+  @media (min-width:768px){.services .service-icon{width:44px;height:44px;border-radius:12px;margin-bottom:12px;}}
+  .services .service-icon svg{width:14px;height:14px;}
+  @media (min-width:768px){.services .service-icon svg{width:20px;height:20px;}}
+  .service-card h3{font-size:11px;font-weight:600;margin-bottom:4px;line-height:1.25;}
+  @media (min-width:768px){.service-card h3{font-size:15px;margin-bottom:10px;}}
+  .service-card ul{margin-bottom:6px;}
+  @media (min-width:768px){.service-card ul{margin-bottom:14px;}}
+  .service-card li{font-size:9px;color:var(--gray-500);display:flex;align-items:center;gap:3px;padding:1px 0;line-height:1.3;}
+  @media (min-width:768px){.service-card li{font-size:13px;gap:8px;padding:2px 0;}}
+  .service-card li::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--gray-300);flex-shrink:0;}
+  .service-card .demo-link{display:inline-flex;align-items:center;gap:2px;font-size:10px;font-weight:500;}
+  @media (min-width:768px){.service-card .demo-link{font-size:13px;gap:4px;}}
+  .service-card .demo-link svg{width:10px;height:10px;}
+  @media (min-width:768px){.service-card .demo-link svg{width:13px;height:13px;}}
+  .c-green{background:#f0fdf4;color:#16a34a;}
+  .c-blue{background:#eff6ff;color:#2563eb;}
+  .c-purple{background:var(--purple-50);color:var(--purple);}
+  .c-orange{background:#fff7ed;color:#ea580c;}
+  .c-pink{background:#fdf2f8;color:#db2777;}
+  .c-amber{background:#fffbeb;color:#d97706;}
+
+  /* Portfolio */
+  .portfolio{background:var(--gray-50);}
+  .portfolio-header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:40px;}
+  .portfolio-grid{display:grid;grid-template-columns:1fr;gap:20px;}
+  @media (min-width:640px){.portfolio-grid{grid-template-columns:repeat(3,1fr);}}
+  .portfolio-card{border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06);transition:box-shadow .3s;}
+  .portfolio-card:hover{box-shadow:0 20px 25px -5px rgba(0,0,0,.1);}
+  .portfolio-thumb{height:176px;display:flex;align-items:center;justify-content:center;transition:transform .3s;position:relative;overflow:hidden;background-image:radial-gradient(circle at 28% 25%, rgba(255,255,255,.35), transparent 55%);background-blend-mode:overlay;}
+  .portfolio-thumb img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+  .portfolio-thumb svg{width:48px;height:48px;}
+  .portfolio-card:hover .portfolio-thumb{transform:scale(1.05);}
+  .portfolio-thumb svg{width:40px;height:40px;color:rgba(255,255,255,.9);}
+  .portfolio-info{background:#0d1420;padding:16px;}
+  .portfolio-info span{font-size:12px;color:var(--purple);font-weight:500;}
+  .portfolio-info p{font-size:14px;font-weight:600;margin-top:4px;}
+  .g-orange-red{background:linear-gradient(135deg,#fb923c,#ef4444);}
+  .g-blue-cyan{background:linear-gradient(135deg,var(--blue-500),var(--cyan));}
+  .g-purple-indigo{background:linear-gradient(135deg,#a855f7,#6366f1);}
+  .g-gray{background:linear-gradient(135deg,#374151,#111827);}
+  .g-pink-rose{background:linear-gradient(135deg,#ec4899,#f43f5e);}
+
+  /* Why choose us */
+  .why-grid{display:grid;grid-template-columns:1fr;gap:20px;}
+  @media (min-width:640px){.why-grid{grid-template-columns:1fr 1fr;gap:28px;}}
+  @media (min-width:1024px){.why-grid{grid-template-columns:repeat(5,1fr);gap:20px;}}
+  .why-item{display:flex;align-items:flex-start;gap:14px;}
+  .why-item .service-icon{width:40px;height:40px;min-width:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--purple-50);color:var(--purple);flex-shrink:0;}
+  .why-item .service-icon svg{width:20px;height:20px;}
+  .why-item h3{font-size:14px;font-weight:600;margin-bottom:4px;}
+  .why-item p{font-size:12px;color:var(--gray-500);}
+
+  /* Process + testimonials */
+  .process{background:var(--gray-50);}
+  .process-grid{display:grid;grid-template-columns:1fr;gap:56px;}
+  @media (min-width:1024px){.process-grid{grid-template-columns:1fr 1fr;}}
+  .step{display:flex;align-items:flex-start;gap:16px;}
+  .step-marker{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+  .step-circle{width:44px;height:44px;border-radius:50%;background:#0d1420;border:2px solid rgba(168,85,247,.35);display:flex;align-items:center;justify-content:center;color:var(--purple);}
+  .step-line{width:0;height:32px;border-left:2px dotted var(--gray-300);margin:4px 0;}
+  .step-body{padding-bottom:24px;}
+  .step-num{font-size:12px;color:var(--gray-400);font-weight:500;}
+  .step-body h3{font-size:16px;font-weight:600;margin:2px 0;}
+  .step-body p{font-size:14px;color:var(--gray-500);}
+  .testimonial-card{background:#0d1420;border:1px solid rgba(255,255,255,.08);border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.2);padding:32px;margin-top:24px;}
+  .quote-icon{width:32px;height:32px;color:#e9d5ff;margin-bottom:16px;}
+  #t-quote{color:var(--gray-600);margin-bottom:24px;}
+  .t-person{display:flex;align-items:center;gap:12px;}
+  .t-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#e9d5ff,#bfdbfe);flex-shrink:0;}
+  #t-name{font-size:14px;font-weight:600;}
+  #t-role{font-size:12px;color:var(--gray-400);}
+  .t-controls{display:flex;align-items:center;justify-content:space-between;margin-top:24px;}
+  .t-dots{display:flex;gap:6px;}
+  .t-dot{width:6px;height:6px;border-radius:999px;background:var(--gray-200);transition:all .2s;}
+  .t-dot.active{background:var(--purple);width:16px;}
+  .t-arrows{display:flex;gap:8px;}
+  .t-arrows button{width:32px;height:32px;border-radius:50%;border:1px solid var(--gray-200);display:flex;align-items:center;justify-content:center;transition:border-color .2s;}
+  .t-arrows button:hover{border-color:#c4b5fd;}
+  .t-arrows svg{width:16px;height:16px;}
+
+  /* CTA banner */
+  .cta-wrap{padding:64px 24px;}
+  .cta-banner{max-width:1280px;margin:0 auto;background:linear-gradient(90deg,var(--purple),#a855f7,var(--blue));border-radius:24px;padding:48px 40px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:32px;text-align:center;}
+  @media (min-width:640px){.cta-banner{flex-direction:row;text-align:left;padding:56px;}}
+  .cta-icon{width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+  @media (min-width:640px){.cta-icon{margin:0 0 16px;}}
+  .cta-icon svg{color:#fff;width:22px;height:22px;}
+  .cta-banner h2{color:#fff;font-size:26px;font-weight:700;margin-bottom:8px;}
+  @media (min-width:640px){.cta-banner h2{font-size:30px;}}
+  .cta-banner p{color:#ede9fe;}
+  .cta-buttons{display:flex;gap:12px;flex-shrink:0;flex-wrap:wrap;justify-content:center;}
+
+  /* Footer */
+  footer{background:var(--gray-900);color:var(--gray-400);padding:64px 24px 32px;}
+  .footer-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr;gap:40px;margin-bottom:40px;}
+  @media (min-width:640px){.footer-grid{grid-template-columns:1fr 1fr;}}
+  @media (min-width:1024px){.footer-grid{grid-template-columns:repeat(4,1fr);}}
+  .footer-brand p{font-size:14px;margin-top:12px;}
+  footer h4{color:#fff;font-weight:600;font-size:14px;margin-bottom:12px;}
+  footer li{font-size:14px;padding:4px 0;}
+  .footer-bottom{max-width:1280px;margin:0 auto;border-top:1px solid var(--gray-800);padding-top:24px;display:flex;flex-direction:column;align-items:center;gap:16px;font-size:12px;}
+  @media (min-width:640px){.footer-bottom{flex-direction:row;justify-content:space-between;}}
+  .socials{display:flex;gap:16px;}
+
+  /* Free Consultation Modal */
+  #consult-overlay{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:16px;}
+  #consult-overlay.open{display:flex;}
+  .consult-backdrop{position:absolute;inset:0;background:rgba(17,24,39,.6);backdrop-filter:blur(4px);}
+  .consult-box{position:relative;background:#fff;border-radius:20px;width:100%;max-width:400px;padding:32px 28px 28px;box-shadow:0 25px 50px -12px rgba(0,0,0,.35);animation:consultIn .25s ease;}
+  @keyframes consultIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+  .consult-close{position:absolute;top:16px;right:16px;color:#9ca3af;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .2s;}
+  .consult-close:hover{background:#f3f4f6;color:#374151;}
+  .consult-step{display:none;}
+  .consult-step.active{display:block;}
+  .consult-icon-badge{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--purple),var(--blue));display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
+  .consult-icon-badge svg{color:#fff;width:26px;height:26px;}
+  .consult-box h3{font-size:20px;font-weight:700;color:#111827;margin-bottom:6px;}
+  .consult-box .consult-sub{font-size:14px;color:#6b7280;margin-bottom:20px;}
+  .consult-field{width:100%;border:1.5px solid #e5e7eb;border-radius:12px;padding:13px 16px;font-size:15px;color:#111827;outline:none;transition:border-color .2s;margin-bottom:6px;}
+  .consult-field:focus{border-color:var(--purple);}
+  .consult-error{font-size:12px;color:#dc2626;min-height:16px;margin-bottom:10px;}
+  .consult-btn-row{display:flex;gap:10px;margin-top:12px;}
+  .consult-btn-row .btn-gradient{flex:1;justify-content:center;}
+  .consult-btn-back{flex-shrink:0;background:#f3f4f6;color:#4b5563;font-weight:500;font-size:14px;padding:12px 18px;border-radius:999px;}
+  .consult-btn-back:hover{background:#e5e7eb;}
+  .consult-progress{display:flex;gap:6px;margin-top:20px;}
+  .consult-progress span{height:4px;flex:1;border-radius:999px;background:#e5e7eb;}
+  .consult-progress span.done{background:linear-gradient(90deg,var(--purple),var(--blue));}
+  .consult-success-icon{width:64px;height:64px;border-radius:50%;background:#dcfce7;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;}
+  .consult-success-icon svg{width:32px;height:32px;color:#16a34a;}
+  .consult-step[data-step="4"]{text-align:center;}
+  .consult-trust{display:flex;align-items:center;gap:8px;font-size:12px;color:#9ca3af;margin-top:18px;}
+  .consult-trust svg{width:14px;height:14px;flex-shrink:0;}
+
+/* ===== TECH VEXORAX FINAL REDESIGN ===== */
+:root{--vx-bg:#02040a;--vx-panel:rgba(10,15,28,.78);--vx-purple:#8b5cf6;--vx-violet:#a855f7;--vx-blue:#3b82f6;--vx-muted:#94a3b8;}
+body{background:radial-gradient(900px 500px at 72% 8%,rgba(124,58,237,.13),transparent 68%),#02040a;color:#f8fafc;}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background-image:linear-gradient(rgba(139,92,246,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(139,92,246,.035) 1px,transparent 1px);background-size:55px 55px;mask-image:linear-gradient(to bottom,#000,transparent 75%);}
+#navbar.scrolled{background:rgba(2,4,10,.86);backdrop-filter:blur(16px);border-bottom:1px solid rgba(139,92,246,.12);}
+.nav-links a:hover{color:#a78bfa}.navbar-cta{background:linear-gradient(100deg,#6d28d9,#a855f7);box-shadow:0 0 24px rgba(139,92,246,.25);}
+.hero{padding-top:145px;background:radial-gradient(700px 450px at 76% 42%,rgba(124,58,237,.13),transparent 70%),linear-gradient(180deg,rgba(5,7,18,.72),#02040a 78%);}
+.hero-single{max-width:1400px;margin:0 auto;position:relative;display:none;}
+@media (min-width:768px){.hero-single{display:block;}}
+.hero-full-img{width:100%;height:auto;display:block;border-radius:12px;}
+.hero-hit-btn{position:absolute;top:63.33%;height:10.01%;display:block;cursor:pointer;border-radius:999px;outline:none;}
+.hero-hit-btn:focus-visible{box-shadow:0 0 0 3px rgba(168,85,247,.6);}
+.hero-mobile{display:block;}
+@media (min-width:768px){.hero-mobile{display:none;}}
+.hero-mobile-text{text-align:left;max-width:520px;margin:0 0 32px;}
+.hero-mobile-text h1{font-size:32px;font-weight:700;line-height:1.2;color:#f8fafc;margin-bottom:14px;}
+.hero-mobile-text p{color:var(--gray-500);font-size:16px;margin-bottom:24px;}
+.hero-mobile-ctas{display:flex;flex-direction:column;gap:12px;align-items:flex-start;margin-bottom:28px;}
+.hero-mobile-ctas .btn-gradient,.hero-mobile-ctas .btn-outline{width:100%;max-width:320px;justify-content:center;}
+.hero-mobile-img{width:100%;height:auto;display:block;border-radius:16px;}
+.hero-hit-consult{left:3.39%;width:18.09%;}
+.hero-hit-work{left:23.35%;width:13.11%;}
+@media(max-width:639px){.hero{padding-top:100px;padding-left:12px;padding-right:12px;}}
+.hero h1{letter-spacing:-.045em}.gradient-text{background:linear-gradient(90deg,#a855f7,#3b82f6);-webkit-background-clip:text;background-clip:text;}
+.eyebrow{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.26);color:#c4b5fd;}
+.btn-gradient{background:linear-gradient(100deg,#6d28d9,#a855f7,#2563eb);box-shadow:0 12px 30px rgba(124,58,237,.24);}
+.btn-outline{background:rgba(255,255,255,.015);border-color:rgba(148,163,184,.25);}
+.hero-visual{height:455px;display:block;position:relative;}
+.hero-mockup-img{position:absolute;right:-55px;top:5px;width:min(650px,115%);max-width:none;height:auto;object-fit:contain;border-radius:8px;filter:drop-shadow(0 28px 45px rgba(0,0,0,.48)) drop-shadow(0 0 35px rgba(124,58,237,.16));animation:float 6s ease-in-out infinite;}
+.float-card{left:0;bottom:8px;background:rgba(8,13,25,.9);border:1px solid rgba(139,92,246,.2);backdrop-filter:blur(14px);box-shadow:0 24px 55px rgba(0,0,0,.45);}
+.hero:after{content:"";position:absolute;width:600px;height:250px;right:-100px;top:220px;border:1px solid rgba(139,92,246,.11);border-radius:50%;transform:rotate(-8deg);pointer-events:none;box-shadow:0 0 55px rgba(124,58,237,.07);}
+.section{background:transparent}.service-card,.portfolio-card,.testimonial-card{background:linear-gradient(145deg,rgba(13,19,34,.9),rgba(7,11,21,.82));border-color:rgba(139,92,246,.13);box-shadow:inset 0 1px rgba(255,255,255,.025);}
+.service-card:hover,.portfolio-card:hover{border-color:rgba(139,92,246,.34);box-shadow:0 20px 45px rgba(0,0,0,.3),0 0 28px rgba(124,58,237,.08);}
+.section-eyebrow{color:#9b7cf7}.portfolio{background:rgba(5,8,16,.55);border-color:rgba(255,255,255,.035);}
+.process{background:radial-gradient(600px 350px at 90% 50%,rgba(124,58,237,.08),transparent 70%),rgba(5,8,16,.55);}
+.cta-banner{background:linear-gradient(105deg,#4c1d95,#7e22ce 48%,#2563eb);box-shadow:0 25px 70px rgba(76,29,149,.2);}
+footer{background:#010309;border-top-color:rgba(255,255,255,.06);}
+@media(max-width:1023px){.hero-visual{height:390px}.hero-mockup-img{right:-20px;width:110%;}}
+@media(max-width:639px){.hero{padding-top:115px}.hero-visual{height:285px;margin-top:10px}.hero-mockup-img{right:-15%;top:0;width:125%;}.float-card{display:none}.hero:after{display:none}}
+@media(max-width:639px){
+  .hero{padding-bottom:36px}
+  .section{padding:40px 20px}
+  .section-title-center{margin-bottom:28px}
+  .section-title-left{margin-bottom:28px}
+  .portfolio-header{margin-bottom:20px}
+  .services-grid{gap:8px}
+  .portfolio-grid{gap:14px}
+  .why-grid{gap:16px}
+  .process-grid{gap:28px}
+  .step-body{padding-bottom:14px}
+  .testimonial-card{padding:22px;margin-top:16px}
+  .cta-wrap{padding:36px 20px}
+  .cta-banner{padding:32px 24px;gap:20px}
+  footer{padding:40px 20px 20px}
+  .footer-grid{gap:28px;margin-bottom:28px}
+}
+.float-actions{position:fixed;bottom:26px;right:26px;display:flex;flex-direction:column;gap:14px;z-index:999;align-items:flex-end;}
+.float-btn{position:relative;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s ease;text-decoration:none;}
+.float-btn svg{position:relative;filter:drop-shadow(0 1px 1px rgba(0,0,0,.15));}
+.float-btn:hover{transform:scale(1.1) translateY(-2px);}
+.float-tooltip{position:absolute;right:72px;top:50%;transform:translateY(-50%);background:#0d1420;color:#fff;font-size:13px;font-weight:600;padding:6px 12px;border-radius:8px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s ease;box-shadow:0 6px 16px rgba(0,0,0,.3);}
+.float-btn:hover .float-tooltip{opacity:1;}
+.consult-float{background:linear-gradient(145deg,#a855f7,#6d28d9);box-shadow:0 10px 28px rgba(139,92,246,.4),0 2px 8px rgba(0,0,0,.25),inset 0 1px 1px rgba(255,255,255,.35);}
+.consult-float:hover{box-shadow:0 14px 32px rgba(139,92,246,.5),0 2px 8px rgba(0,0,0,.25),inset 0 1px 1px rgba(255,255,255,.35);}
+.whatsapp-float{background:linear-gradient(145deg,#2fe27a,#20b858);box-shadow:0 10px 28px rgba(32,184,88,.4),0 2px 8px rgba(0,0,0,.25),inset 0 1px 1px rgba(255,255,255,.35);}
+.whatsapp-float:before{content:'';position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 0 rgba(37,211,102,.55);animation:wa-pulse 2.6s ease-out infinite;pointer-events:none;}
+.whatsapp-float:hover{box-shadow:0 14px 32px rgba(32,184,88,.5),0 2px 8px rgba(0,0,0,.25),inset 0 1px 1px rgba(255,255,255,.35);}
+@keyframes wa-pulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.5);}70%{box-shadow:0 0 0 14px rgba(37,211,102,0);}100%{box-shadow:0 0 0 0 rgba(37,211,102,0);}}
+@media(max-width:639px){.float-actions{bottom:18px;right:18px;gap:10px;}.float-btn{width:52px;height:52px;}.float-tooltip{display:none;}}
+
+</style>
+</head>
+<body>
+
+<header id="navbar">
+  <div class="navbar-inner">
+    <div class="logo"><img src="logo.jpg" alt="Tech VexoraX"></div>
+    <nav class="nav-links">
+      <a href="#home">Home</a><a href="#services">Services</a><a href="#portfolio">Portfolio</a>
+      <a href="#">Pricing</a><a href="#">About Us</a><a href="#footer">Contact</a>
+    </nav>
+    <a href="javascript:void(0)" class="btn-gradient navbar-cta js-open-consult">Get Free Consultation
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+    <button id="menu-btn" aria-label="Menu">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+  <div id="mobile-menu">
+    <a href="#home">Home</a><a href="#services">Services</a><a href="#portfolio">Portfolio</a>
+    <a href="#">Pricing</a><a href="#">About Us</a><a href="#footer">Contact</a>
+    <a href="javascript:void(0)" class="btn-gradient small js-open-consult">Get Free Consultation</a>
+  </div>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-mobile reveal">
+    <div class="hero-mobile-text">
+      <span class="eyebrow">Premium Web Development Agency</span>
+      <h1>We Build Premium Websites That <span class="gradient-text">Grow Your Business</span></h1>
+      <p>Custom websites designed to attract, engage and convert visitors into customers.</p>
+      <div class="hero-mobile-ctas">
+        <a href="javascript:void(0)" class="btn-gradient js-open-consult">Get Free Consultation</a>
+        <a href="#portfolio" class="btn-outline on-dark">View Our Work</a>
+      </div>
+    </div>
+    <img src="hero-mockup.jpg" alt="Tech VexoraX — websites for gyms, restaurants, boutiques and clinics" class="hero-mobile-img">
+  </div>
+  <div class="hero-single reveal">
+    <img src="hero-full.png" alt="Tech VexoraX — We Build Premium Websites That Grow Your Business" class="hero-full-img">
+    <a href="javascript:void(0)" class="hero-hit-btn hero-hit-consult js-open-consult" aria-label="Get Free Consultation"></a>
+    <a href="#portfolio" class="hero-hit-btn hero-hit-work" aria-label="View Our Work"></a>
+  </div>
+</section>
+</section>
+
+<section class="section services" id="services">
+  <div class="container">
+    <div class="section-title-center reveal">
+      <span class="section-eyebrow">Services / Categories</span>
+      <h2>Websites for Every Type of Business</h2>
+      <p class="sub">Choose a solution that fits your business and stands out online.</p>
+    </div>
+    <div class="services-grid">
+      <a href="restaurant-gallery.html" class="service-card reveal">
+        <div class="service-icon c-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v7c0 1 .5 2 2 2s2-1 2-2V2M8 11v11M18 2c-1.5 0-3 1.5-3 5s1 5 3 5M18 2v19"/></svg></div>
+        <h3>Restaurant Website</h3>
+        <ul><li>Online Menu</li><li>Table Reservation</li><li>QR Ordering</li><li>WhatsApp Orders</li><li>Google Reviews</li></ul>
+        <span class="demo-link c-green" style="color:#16a34a">View Demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </a>
+      <a href="hotel-gallery.html" class="service-card reveal">
+        <div class="service-icon c-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="8" y1="7" x2="8" y2="7.01"/><line x1="12" y1="7" x2="12" y2="7.01"/><line x1="16" y1="7" x2="16" y2="7.01"/><line x1="8" y1="11" x2="8" y2="11.01"/><line x1="12" y1="11" x2="12" y2="11.01"/><line x1="16" y1="11" x2="16" y2="11.01"/><path d="M10 21v-3a2 2 0 0 1 4 0v3"/></svg></div>
+        <h3>Hotel Website</h3>
+        <ul><li>Room Showcase</li><li>Booking Inquiry Forms</li><li>Gallery</li><li>Maps</li><li>Customer Reviews</li></ul>
+        <span class="demo-link" style="color:#2563eb">View Demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </a>
+      <a href="clinic-gallery.html" class="service-card reveal">
+        <div class="service-icon c-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
+        <h3>Clinic Website</h3>
+        <ul><li>Appointment Booking</li><li>Doctor Profiles</li><li>Patient Information</li><li>Contact Forms</li><li>Mobile Friendly</li></ul>
+        <span class="demo-link" style="color:#9333ea">View Demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </a>
+      <a href="gym-gallery.html" class="service-card reveal">
+        <div class="service-icon c-orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7v10M4 9v6M20 7v10M22 9v6M6 12h12"/></svg></div>
+        <h3>Gym Website</h3>
+        <ul><li>Membership Plans</li><li>Trainer Profiles</li><li>Class Schedules</li><li>Lead Generation Forms</li><li>Transformation Gallery</li></ul>
+        <span class="demo-link" style="color:#ea580c">View Demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </a>
+      <a href="ecommerce-gallery.html" class="service-card reveal">
+        <div class="service-icon c-pink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.5 3h2l2.7 12.4a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L22 8H6"/></svg></div>
+        <h3>E-commerce Website</h3>
+        <ul><li>Product Catalog</li><li>Shopping Cart</li><li>Payment Gateway</li><li>Order Tracking</li><li>Inventory Management</li></ul>
+        <span class="demo-link" style="color:#db2777">View Demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </a>
+      <a href="jewellery-gallery.html" class="service-card reveal">
+        <div class="service-icon c-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20M9 3l1.5 6L12 21M15 3l-1.5 6L12 21"/></svg></div>
+        <h3>Jewellery Website</h3>
+        <ul><li>Premium Gallery</li><li>Collection Showcase</li><li>Inquiry Forms</li><li>WhatsApp Integration</li><li>Luxury Design</li></ul>
+        <span class="demo-link" style="color:#d97706">View Demo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section portfolio" id="portfolio">
+  <div class="container">
+    <div class="portfolio-header reveal">
+      <div>
+        <span class="section-eyebrow">Our Portfolio</span>
+        <h2>Featured Projects</h2>
+        <p class="sub">A glimpse of websites we designed for our amazing clients.</p>
+      </div>
+      <a href="gallery.html" class="btn-outline">View All Projects <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+    </div>
+    <div class="portfolio-grid">
+      <div class="portfolio-card reveal">
+        <a href="https://webkelender.github.io/CASA-BIANCA/" target="_blank" rel="noopener">
+        <div class="portfolio-thumb g-orange-red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v7c0 1 .5 2 2 2s2-1 2-2V2M8 11v11M18 2c-1.5 0-3 1.5-3 5s1 5 3 5M18 2v19"/></svg></div>
+        <div class="portfolio-info"><span>Restaurant Website</span><p>Casa Bianca</p></div>
+        </a>
+      </div>
+      <div class="portfolio-card reveal">
+        <a href="https://webkelender.github.io/NOOR-Portfolio-/noor-jewellery.html" target="_blank" rel="noopener">
+        <div class="portfolio-thumb" style="background:linear-gradient(135deg,#f59e0b,#92400e)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"/><path d="M2 9h20M9 3l1.5 6L12 21M15 3l-1.5 6L12 21"/></svg><img src="https://images.unsplash.com/photo-1758995115682-1452a1a9e35b?w=500&h=500&fit=crop&auto=format&q=80" alt="NOOR gold jewellery" loading="lazy" onerror="this.style.display='none'"></div>
+        <div class="portfolio-info"><span>Jewellery Website</span><p>NOOR</p></div>
+        </a>
+      </div>
+      <div class="portfolio-card reveal">
+        <a href="https://webkelender.github.io/Demo-clinic-website-/" target="_blank" rel="noopener">
+        <div class="portfolio-thumb g-purple-indigo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>
+        <div class="portfolio-info"><span>Clinic Website</span><p>Dhanvantari Clinic</p></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:#050810">
+  <div class="container">
+    <div class="section-title-left reveal">
+      <span class="section-eyebrow">Why Choose Tech VexoraX</span>
+      <h2>More Than Just Designs, We Deliver Success</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-item reveal"><div class="service-icon c-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg></div><div><h3>Modern & Unique Designs</h3><p>Clean, creative and conversion-focused designs.</p></div></div>
+      <div class="why-item reveal"><div class="service-icon c-purple"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg></div><div><h3>Performance Optimized</h3><p>Lightning fast websites that rank higher and load faster.</p></div></div>
+      <div class="why-item reveal"><div class="service-icon c-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg></div><div><h3>Mobile First Approach</h3><p>Fully responsive on every device and screen size.</p></div></div>
+      <div class="why-item reveal"><div class="service-icon c-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5z"/><polyline points="9 12 11 14 15 10"/></svg></div><div><h3>SEO & Security Ready</h3><p>Built with best SEO practices and top security.</p></div></div>
+      <div class="why-item reveal"><div class="service-icon c-purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-3a9 9 0 0 1 18 0v3"/><rect x="2" y="14" width="5" height="7" rx="2"/><rect x="17" y="14" width="5" height="7" rx="2"/></svg></div><div><h3>24/7 Support</h3><p>We're always here to help you anytime you need.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section process">
+  <div class="container">
+    <div class="process-grid">
+      <div class="reveal">
+        <span class="section-eyebrow">Our Process</span>
+        <h2 style="margin-bottom:40px">Simple Steps, Powerful Results</h2>
+        <div class="step">
+          <div class="step-marker"><div class="step-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg></div><div class="step-line"></div></div>
+          <div class="step-body"><p class="step-num">01</p><h3>Discover</h3><p>We understand your business, goals and requirements.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-marker"><div class="step-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><rect x="6" y="4" width="12" height="17" rx="1"/><path d="M9 2h6v3H9z"/><line x1="9" y1="10" x2="15" y2="10"/><line x1="9" y1="14" x2="15" y2="14"/></svg></div><div class="step-line"></div></div>
+          <div class="step-body"><p class="step-num">02</p><h3>Plan</h3><p>We plan the structure, content and features of your website.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-marker"><div class="step-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M12 2a10 10 0 1 0 0 20c1.5 0 2-1 2-2s-.5-1.5-.5-2.5S14.5 16 16 16h1a5 5 0 0 0 5-5c0-5-4.5-9-10-9z"/><circle cx="7.5" cy="10.5" r="1"/><circle cx="12" cy="7.5" r="1"/><circle cx="16.5" cy="10.5" r="1"/></svg></div><div class="step-line"></div></div>
+          <div class="step-body"><p class="step-num">03</p><h3>Design</h3><p>We create stunning UI/UX designs that represent your brand.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-marker"><div class="step-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><polyline points="16 4 22 12 16 20"/><polyline points="8 4 2 12 8 20"/></svg></div><div class="step-line"></div></div>
+          <div class="step-body"><p class="step-num">04</p><h3>Develop</h3><p>We build your website with clean code and modern technology.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-marker"><div class="step-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M12 2c3 1 6 4 6 9 0 3-1 5-2 6l-1 4-3-2-3 2-1-4c-1-1-2-3-2-6 0-5 3-8 6-9z"/><circle cx="12" cy="10" r="2"/></svg></div></div>
+          <div class="step-body"><p class="step-num">05</p><h3>Launch</h3><p>We test everything and launch your website successfully.</p></div>
+        </div>
+      </div>
+      <div class="reveal">
+        <span class="section-eyebrow">What Our Clients Say</span>
+        <div class="testimonial-card">
+          <svg class="quote-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M9 7H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h1v3l4-3h0V9a2 2 0 0 0-2-2z"/><path d="M19 7h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h1v3l4-3h0V9a2 2 0 0 0-2-2z"/></svg>
+          <p id="t-quote"></p>
+          <div class="t-person"><div class="t-avatar"></div><div><p id="t-name"></p><p id="t-role"></p></div></div>
+          <div class="t-controls">
+            <div class="t-dots">
+              <button class="t-dot" data-i="0"></button><button class="t-dot" data-i="1"></button><button class="t-dot" data-i="2"></button>
+            </div>
+            <div class="t-arrows">
+              <button id="t-prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+              <button id="t-next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-wrap">
+  <div class="cta-banner reveal">
+    <div>
+      <div class="cta-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c3 1 6 4 6 9 0 3-1 5-2 6l-1 4-3-2-3 2-1-4c-1-1-2-3-2-6 0-5 3-8 6-9z"/><circle cx="12" cy="10" r="2"/></svg></div>
+      <h2>Ready To Grow Your Business Online?</h2>
+      <p>Get a custom website designed specifically for your business and start getting more customers.</p>
+    </div>
+    <div class="cta-buttons">
+      <a href="javascript:void(0)" class="btn-white js-open-consult">Get Free Consultation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      <a href="#portfolio" class="btn-outline on-dark">View Our Work</a>
+    </div>
+  </div>
+</div>
+
+<!-- Free Consultation Modal -->
+<div id="consult-overlay">
+  <div class="consult-backdrop" id="consult-backdrop"></div>
+  <div class="consult-box">
+    <button class="consult-close" id="consult-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:18px;height:18px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <!-- Step 1: Phone -->
+    <div class="consult-step active" data-step="1">
+      <div class="consult-icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+      <h3>Get Your Free Consultation</h3>
+      <p class="consult-sub">Let's start with your phone number — we'll only use it for this consultation.</p>
+      <input type="tel" class="consult-field" id="consult-phone" placeholder="e.g. +91 98765 43210" inputmode="tel">
+      <p class="consult-error" id="consult-error-1"></p>
+      <div class="consult-btn-row"><button class="btn-gradient" id="consult-next-1">Continue
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button></div>
+      <div class="consult-progress"><span class="done"></span><span></span><span></span></div>
+    </div>
+
+    <!-- Step 2: Name -->
+    <div class="consult-step" data-step="2">
+      <div class="consult-icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+      <h3>What's your name?</h3>
+      <p class="consult-sub">So our team knows who they're speaking with.</p>
+      <input type="text" class="consult-field" id="consult-name" placeholder="Your full name">
+      <p class="consult-error" id="consult-error-2"></p>
+      <div class="consult-btn-row">
+        <button class="consult-btn-back" data-back="1">Back</button>
+        <button class="btn-gradient" id="consult-next-2">Continue
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+      <div class="consult-progress"><span class="done"></span><span class="done"></span><span></span></div>
+    </div>
+
+    <!-- Step 3: Location -->
+    <div class="consult-step" data-step="3">
+      <div class="consult-icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+      <h3>Where are you from?</h3>
+      <p class="consult-sub">Helps us tailor the consultation to your market.</p>
+      <input type="text" class="consult-field" id="consult-location" placeholder="City, Country">
+      <p class="consult-error" id="consult-error-3"></p>
+      <div class="consult-btn-row">
+        <button class="consult-btn-back" data-back="2">Back</button>
+        <button class="btn-gradient" id="consult-start">Start Consultation
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </button>
+      </div>
+      <div class="consult-progress"><span class="done"></span><span class="done"></span><span class="done"></span></div>
+      <div class="consult-trust">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Your details are kept private and only used for this consultation.
+      </div>
+    </div>
+
+    <!-- Step 4: Success / handoff -->
+    <div class="consult-step" data-step="4">
+      <div class="consult-success-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <h3 id="consult-success-name">You're all set!</h3>
+      <p class="consult-sub">We've got your details — our team will reach out shortly. Want to keep chatting right now?</p>
+      <div class="consult-success-actions">
+        <a id="consult-whatsapp-continue" href="#" target="_blank" rel="noopener" class="btn-gradient" style="width:100%;justify-content:center;margin-top:16px;">Continue on WhatsApp</a>
+        <a href="javascript:void(0)" id="consult-start-chat" style="width:100%;justify-content:center;margin-top:12px;display:flex;align-items:center;background:#a855f7;color:#fff;font-weight:700;border-radius:999px;padding:14px 24px;text-decoration:none;">Start Conversation</a>
+        <a href="javascript:void(0)" id="consult-done" style="display:block;text-align:center;margin-top:12px;color:var(--gray-500);font-size:14px;">Close</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer id="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo" style="color:#fff"><img src="logo.jpg" alt="Tech VexoraX"></div>
+      <p>We build modern, fast, and result-driven websites for businesses of all sizes.</p>
+    </div>
+    <div><h4>Quick Links</h4><ul><li>Home</li><li>Services</li><li>About Us</li><li>Contact</li></ul></div>
+    <div><h4>Our Services</h4><ul><li>Restaurant Website</li><li>Hotel Website</li><li>Clinic Website</li><li>Gym Website</li><li>E-commerce Website</li><li>Jewellery Website</li></ul></div>
+    <div><h4>Contact Us</h4><ul><li><a href="mailto:techvexorax@gmail.com" style="color:inherit">techvexorax@gmail.com</a></li><li><a href="https://wa.me/919987438639" style="color:inherit" target="_blank" rel="noopener">+91 99874 38639</a></li><li>Maharashtra, India</li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Tech VexoraX. All Rights Reserved.</p>
+    <div class="socials"><span>Facebook</span><a href="https://www.instagram.com/techvexorax?igsi=MWo4bHltc3h2dHB0bQ==" target="_blank" rel="noopener" style="color:inherit">Instagram</a><span>LinkedIn</span></div>
+  </div>
+</footer>
+
+<script>
+  // Navbar scroll blur
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Mobile menu toggle
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  let menuOpen = false;
+  const menuIcon = menuBtn.innerHTML;
+  const closeIcon = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+  menuBtn.addEventListener('click', () => {
+    menuOpen = !menuOpen;
+    mobileMenu.classList.toggle('open', menuOpen);
+    menuBtn.innerHTML = menuOpen ? closeIcon : menuIcon;
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    menuOpen = false; mobileMenu.classList.remove('open'); menuBtn.innerHTML = menuIcon;
+  }));
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach((el) => observer.observe(el));
+
+  // Testimonial slider
+  const testimonials = [
+    { name: 'Rajesh Patil', role: 'Owner, Spice Delight', quote: 'Tech VexoraX created an amazing website for our restaurant. The design is beautiful and we are getting more customers than ever before!' },
+    { name: 'Ananya Kapoor', role: 'Manager, Ocean Stay Hotel', quote: 'Our booking inquiries doubled within a month of launch. The team understood exactly what our hotel needed.' },
+    { name: 'Dr. Vikram Rao', role: 'Founder, Dhanvantari Clinic', quote: 'Patients now book appointments online with ease. Professional, fast, and reliable work from start to finish.' },
+  ];
+  let tIndex = 0;
+  const tQuote = document.getElementById('t-quote');
+  const tName = document.getElementById('t-name');
+  const tRole = document.getElementById('t-role');
+  const tDots = document.querySelectorAll('.t-dot');
+  function renderTestimonial() {
+    const t = testimonials[tIndex];
+    tQuote.textContent = t.quote; tName.textContent = t.name; tRole.textContent = t.role;
+    tDots.forEach((d, i) => d.classList.toggle('active', i === tIndex));
+  }
+  document.getElementById('t-next').addEventListener('click', () => { tIndex = (tIndex + 1) % testimonials.length; renderTestimonial(); });
+  document.getElementById('t-prev').addEventListener('click', () => { tIndex = (tIndex - 1 + testimonials.length) % testimonials.length; renderTestimonial(); });
+  tDots.forEach((d) => d.addEventListener('click', () => { tIndex = parseInt(d.dataset.i, 10); renderTestimonial(); }));
+  renderTestimonial();
+
+  /* ---------------- Free Consultation Modal + Tawk.to handoff ---------------- */
+  const consultOverlay = document.getElementById('consult-overlay');
+  const consultSteps = document.querySelectorAll('.consult-step');
+  const consultLead = { phone: '', name: '', location: '' };
+
+  function showConsultStep(n){
+    consultSteps.forEach(s => s.classList.toggle('active', Number(s.dataset.step) === n));
+  }
+  function openConsultModal(){
+    consultLead.phone = ''; consultLead.name = ''; consultLead.location = '';
+    document.getElementById('consult-phone').value = '';
+    document.getElementById('consult-name').value = '';
+    document.getElementById('consult-location').value = '';
+    ['consult-error-1','consult-error-2','consult-error-3'].forEach(id => document.getElementById(id).textContent = '');
+    showConsultStep(1);
+    consultOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('consult-phone').focus(), 100);
+  }
+  function closeConsultModal(){
+    consultOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.js-open-consult').forEach(btn => {
+    btn.addEventListener('click', (e) => { e.preventDefault(); openConsultModal(); });
+  });
+  document.getElementById('consult-close').addEventListener('click', closeConsultModal);
+  document.getElementById('consult-backdrop').addEventListener('click', closeConsultModal);
+  document.querySelectorAll('[data-back]').forEach(btn => {
+    btn.addEventListener('click', () => showConsultStep(Number(btn.dataset.back)));
+  });
+
+  // Step 1: phone
+  document.getElementById('consult-next-1').addEventListener('click', () => {
+    const val = document.getElementById('consult-phone').value.trim();
+    const errEl = document.getElementById('consult-error-1');
+    const digits = val.replace(/[^0-9]/g, '');
+    if (digits.length < 7) { errEl.textContent = 'Please enter a valid phone number.'; return; }
+    errEl.textContent = '';
+    consultLead.phone = val;
+    showConsultStep(2);
+    setTimeout(() => document.getElementById('consult-name').focus(), 100);
+  });
+
+  // Step 2: name
+  document.getElementById('consult-next-2').addEventListener('click', () => {
+    const val = document.getElementById('consult-name').value.trim();
+    const errEl = document.getElementById('consult-error-2');
+    if (val.length < 2) { errEl.textContent = 'Please enter your name.'; return; }
+    errEl.textContent = '';
+    consultLead.name = val;
+    showConsultStep(3);
+    setTimeout(() => document.getElementById('consult-location').focus(), 100);
+  });
+
+  // Step 3: location -> submit
+  document.getElementById('consult-start').addEventListener('click', () => {
+    const val = document.getElementById('consult-location').value.trim();
+    const errEl = document.getElementById('consult-error-3');
+    if (val.length < 2) { errEl.textContent = 'Please tell us where you\'re from.'; return; }
+    errEl.textContent = '';
+    consultLead.location = val;
+
+    document.getElementById('consult-success-name').textContent = `You're all set, ${consultLead.name}!`;
+
+    // Pre-fill a WhatsApp continue link with their details (no forced full-screen chat takeover).
+    const waMsg = encodeURIComponent(
+      `Hi, I'm ${consultLead.name} from ${consultLead.location}. I just requested a free consultation on the website — my number is ${consultLead.phone}.`
+    );
+    document.getElementById('consult-whatsapp-continue').href = `https://wa.me/919987438639?text=${waMsg}`;
+
+    showConsultStep(4);
+    saveLeadToAdminPanel(consultLead);
+
+    // Also hand the lead's details to Tawk.to quietly in the background (for your Admin/Tawk records),
+    // without maximizing/forcing open the widget — avoids Tawk's full-screen takeover on mobile.
+    if (window.Tawk_API && typeof Tawk_API.setAttributes === 'function') {
+      Tawk_API.setAttributes({ name: consultLead.name, phone: consultLead.phone, location: consultLead.location }, function(){});
+    }
+  });
+  document.getElementById('consult-done').addEventListener('click', closeConsultModal);
+  document.getElementById('consult-start-chat').addEventListener('click', () => {
+    closeConsultModal();
+    if (window.Tawk_API && typeof Tawk_API.maximize === 'function') {
+      Tawk_API.showWidget && Tawk_API.showWidget();
+      Tawk_API.maximize();
+    }
+  });
+
+  // Save the lead to Firestore so it shows up live in the Admin Panel's Enquiries,
+  // on any device, not just this browser.
+  function saveLeadToAdminPanel(lead){
+    if (window.saveLeadToFirestore) {
+      window.saveLeadToFirestore(lead).catch(function(){ /* fail silently — chat still proceeds */ });
+    }
+  }
+
+  // Hand off to Tawk.to live chat with the visitor's details pre-filled.
+  function startTawkChat(lead){
+    function openWidget(){
+      if (window.Tawk_API && typeof Tawk_API.setAttributes === 'function') {
+        Tawk_API.setAttributes({ name: lead.name, phone: lead.phone, location: lead.location }, function(){});
+      }
+      if (window.Tawk_API && typeof Tawk_API.showWidget === 'function') Tawk_API.showWidget();
+      if (window.Tawk_API && typeof Tawk_API.maximize === 'function') Tawk_API.maximize();
+    }
+    if (window.Tawk_API && typeof Tawk_API.maximize === 'function') {
+      openWidget();
+    } else {
+      // Widget script may still be loading — retry briefly.
+      let tries = 0;
+      const poll = setInterval(() => {
+        tries++;
+        if (window.Tawk_API && typeof Tawk_API.maximize === 'function') {
+          clearInterval(poll);
+          openWidget();
+        } else if (tries > 20) {
+          clearInterval(poll);
+        }
+      }, 250);
+    }
+  }
+</script>
+
+<!-- Tawk.to Live Chat Widget -->
+<script>
+  // TODO: replace with your real Tawk.to Property ID and Widget ID (from your Tawk.to dashboard: Administration > Channels > Chat Widget)
+  var TAWK_PROPERTY_ID = '6a9673ed2a1468344425acf2';
+  var TAWK_WIDGET_ID = '1k1dr9mba';
+
+  var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+  Tawk_API.onLoad = function(){
+    // Keep the default floating bubble hidden — our Free Consultation flow opens it manually.
+    Tawk_API.hideWidget();
+  };
+  (function(){
+    if (TAWK_PROPERTY_ID === 'YOUR_TAWK_PROPERTY_ID') return; // don't load until a real ID is set
+    var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+    s1.async = true;
+    s1.src = 'https://embed.tawk.to/' + TAWK_PROPERTY_ID + '/' + TAWK_WIDGET_ID;
+    s1.charset = 'UTF-8';
+    s1.setAttribute('crossorigin', '*');
+    s0.parentNode.insertBefore(s1, s0);
+  })();
+</script>
+
+<div class="float-actions">
+  <a href="javascript:void(0)" class="float-btn consult-float" aria-label="Book a Consultation" onclick="startTawkChat({name:'',phone:'',location:''});">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    <span class="float-tooltip">Book Consultation</span>
+  </a>
+  <a href="https://wa.me/919987438639" target="_blank" rel="noopener" class="float-btn whatsapp-float" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="26" height="26"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413"/></svg>
+    <span class="float-tooltip">WhatsApp Us</span>
+  </a>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDI9J93Yp0IhsErFHa_eLLe-lHBmBOX-mc",
+  authDomain: "tech-vexorax.firebaseapp.com",
+  projectId: "tech-vexorax",
+  storageBucket: "tech-vexorax.firebasestorage.app",
+  messagingSenderId: "201864055848",
+  appId: "1:201864055848:web:7305db39629cfb56e5b91d",
+  measurementId: "G-QD58T83VX0"
+};
+const fbApp = initializeApp(firebaseConfig);
+const db = getFirestore(fbApp);
+
+window.saveLeadToFirestore = function (lead) {
+  return addDoc(collection(db, 'leads'), {
+    name: lead.name || '',
+    phone: lead.phone || '',
+    location: lead.location || '',
+    type: 'Free Consultation',
+    status: 'New',
+    createdAt: serverTimestamp()
+  });
+};
+</script>
+</body>
+</html>
